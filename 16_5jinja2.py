@@ -3,11 +3,10 @@ from fastapi.responses import HTMLResponse
 from typing import Annotated, List
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel # Импорт моделей Pydantic (для валидации входящих и исходящих данных)
-#модели pydantic проверяют, корректируют дaнные
-# или если данные не корректны и нет возможности их скорректировать то выводит исключение-ошибку.
+
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="templates") #объект Jinja2Templates, папка шаблонов - templates
 
 # Создайте пустой список
 users = []
@@ -18,7 +17,7 @@ class User(BaseModel):
     username: str
     age: int
 
-# get запрос по маршруту '/users', который возвращает список users
+
 
 @app.get("/")
 async def get_main_users(request: Request) -> HTMLResponse:
@@ -43,7 +42,7 @@ async def post_user(
 @app.put('/user/{user_id}/{username}/{age}')
 async def put_user(user_id: Annotated[int, Path(description='Введите ID', example='1')],
                    username: Annotated[str, Path(max_length=35, description='Введите имя', example='Alex')],
-                   age: Annotated[int, Path(le=1000, description='Введите возраст', example='25')]):
+                   age: Annotated[int, Path(le=100, description='Введите возраст', example='25')]):
     for i in users:
         if i.id == user_id:
             i.username = username
